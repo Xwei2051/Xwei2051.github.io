@@ -93,7 +93,7 @@ const enableBanner = !!siteConfig.banner.src;
 
 let pageTitle: string;
 const browserTitleBase =
-	profileConfig.name || siteConfig.navbarTitle.text || siteConfig.title;
+	profileConfig.name || siteConfig.navbarTitle?.text || siteConfig.title;
 if (title) {
 	pageTitle = `${title} - ${browserTitleBase}`;
 } else {
