@@ -1,6 +1,7 @@
 ---
 import { FilterTabs } from "@components/atoms/filter-tabs";
 import { MomentCard } from "@components/features/diary";
+import { PageHeader } from "@components/features/page-header";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { Icon } from "astro-icon/components";
 
@@ -55,43 +56,26 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 	<div
 		class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32"
 	>
-		<div class="card-base z-10 relative w-full overflow-hidden">
-			<!-- Diary Header -->
-			<div class="px-6 sm:px-9 py-6">
-				<div
-					class="diary-header rounded-xl p-5 sm:p-6"
-				>
-					<div class="flex items-center justify-between gap-4">
-						<div class="min-w-0">
-							<h1
-								class="diary-header-title text-2xl sm:text-3xl font-bold mb-1 truncate"
-							>
-								{title}
-							</h1>
-							<p
-								class="diary-header-subtitle text-sm sm:text-base truncate"
-							>
-								{subtitle}
-							</p>
-						</div>
-						<div class="diary-header-count shrink-0 text-center">
-							<span
-								class="block text-2xl sm:text-3xl font-bold"
-							>
-								{moments.length}
-							</span>
-							<span
-								class="block text-xs sm:text-sm"
-							>
-								{i18n(I18nKey.diaryCount)}
-							</span>
-						</div>
-					</div>
+		<div class="card-base z-10 px-6 sm:px-9 py-6 relative w-full overflow-hidden">
+			<PageHeader title={title} />
+
+			<div class="diary-summary mb-8">
+				<div>
+					<span>ENTRIES</span>
+					<strong data-diary-count>{moments.length}</strong>
+				</div>
+				<div>
+					<span>TAGS</span>
+					<strong data-diary-tag-count>{allTags.length}</strong>
+				</div>
+				<div>
+					<span>FIELD NOTES</span>
+					<strong>{moments.length > 0 ? "ON" : "IDLE"}</strong>
 				</div>
 			</div>
 
 			<!-- Content -->
-			<div class="px-6 sm:px-9 pt-2 pb-6">
+			<div>
 				{
 					moments.length > 0 && allTags.length > 0 && (
 						<div class="mb-8">
@@ -320,7 +304,7 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 						let filterContainer = document.querySelector(".filter-tabs");
 						if (!filterContainer) {
 							// No filter tabs in static render — need to create the container
-							const contentArea = document.querySelector(".card-base .px-6.sm\\:px-9.pt-2.pb-6");
+							const contentArea = document.querySelector("#diary-list")?.parentElement;
 							if (!contentArea) {return;}
 							filterContainer = document.createElement("div");
 							filterContainer.className = "filter-tabs diary-filter mb-8";
@@ -389,9 +373,7 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 					}
 
 					function updateCountDisplay(count) {
-						const countEl = document.querySelector(
-			".diary-header-count .text-2xl",
-		);
+						const countEl = document.querySelector("[data-diary-count]");
 						if (countEl) {
 							countEl.textContent = String(count);
 						}
@@ -439,122 +421,51 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 </MainGridLayout>
 
 <style>
-	.diary-header {
+	.diary-summary {
+		display: grid;
+		grid-template-columns: minmax(8rem, 1.15fr) repeat(2, minmax(0, 1fr));
+		gap: 0.75rem;
+	}
+
+	.diary-summary div {
 		position: relative;
 		overflow: hidden;
-		border: 1px solid
-			color-mix(in oklab, var(--primary) 24%, var(--line-divider));
+		padding: 0.9rem 1rem;
+		border: 1px solid color-mix(in oklab, var(--primary) 16%, var(--line-divider));
+		border-radius: 0.85rem;
 		background:
-			radial-gradient(
-				circle at 12% 18%,
-				oklch(0.72 0.16 var(--hue) / 0.18),
-				transparent 30%
-			),
 			linear-gradient(
-				135deg,
-				color-mix(in oklab, var(--card-bg) 92%, var(--primary) 8%),
-				color-mix(in oklab, var(--card-bg) 98%, black 2%)
-			);
-		box-shadow:
-			inset 0 1px 0 rgba(255, 255, 255, 0.05),
-			0 16px 38px rgba(0, 0, 0, 0.12);
+				90deg,
+				oklch(0.72 0.15 var(--hue) / 0.1),
+				transparent 46%
+			),
+			color-mix(in oklab, var(--btn-regular-bg) 92%, var(--primary) 6%);
 	}
 
-	.diary-header::before {
-		content: "";
-		position: absolute;
-		inset: 0 auto 0 0;
-		width: 4px;
-		background: linear-gradient(
-			180deg,
-			oklch(0.82 0.16 var(--hue)),
-			oklch(0.74 0.14 calc(var(--hue) + 120))
-		);
-		box-shadow: 0 0 18px oklch(0.72 0.16 var(--hue) / 0.55);
+	.diary-summary span {
+		display: block;
+		margin-bottom: 0.3rem;
+		color: color-mix(in oklab, var(--primary) 68%, var(--regular-text));
+		font-size: 0.68rem;
+		font-weight: 750;
+		letter-spacing: 0.12em;
 	}
 
-	.diary-header::after {
-		content: "";
-		position: absolute;
-		top: -4rem;
-		right: -3rem;
-		width: 13rem;
-		height: 13rem;
-		border-radius: 999px;
-		background: oklch(0.74 0.14 var(--hue) / 0.12);
-		filter: blur(8px);
-		pointer-events: none;
-	}
-
-	.diary-header-title,
-	.diary-header-subtitle,
-	.diary-header-count {
-		position: relative;
-		z-index: 1;
-	}
-
-	.diary-header-title {
+	.diary-summary strong {
 		color: var(--deep-text);
-		text-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+		font-size: 1.55rem;
+		line-height: 1;
 	}
 
-	.diary-header-subtitle {
-		color: var(--regular-text);
-		opacity: 0.76;
+	:global(:root.dark) .diary-summary strong {
+		color: rgba(255, 255, 255, 0.88);
 	}
 
-	.diary-header-count {
-		min-width: 4.2rem;
-		padding: 0.55rem 0.8rem;
-		border: 1px solid color-mix(in oklab, var(--primary) 32%, transparent);
-		border-radius: 0.9rem;
-		background: color-mix(in oklab, var(--primary) 12%, transparent);
-		color: color-mix(in oklab, var(--primary) 80%, var(--deep-text));
-		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-	}
-
-	.diary-header-count span:last-child {
-		color: var(--regular-text);
-		opacity: 0.72;
-	}
-
-	:global(:root.dark) .diary-header {
-		background:
-			radial-gradient(
-				circle at 12% 18%,
-				oklch(0.68 0.15 var(--hue) / 0.18),
-				transparent 30%
-			),
-			linear-gradient(
-				135deg,
-				color-mix(in oklab, var(--card-bg) 90%, white 4%),
-				color-mix(in oklab, var(--card-bg) 96%, black 4%)
-			);
-		box-shadow:
-			inset 0 1px 0 rgba(255, 255, 255, 0.06),
-			0 18px 42px rgba(0, 0, 0, 0.24);
-	}
-
-	:global(:root.dark) .diary-header-title {
-		color: rgba(255, 255, 255, 0.92);
-		text-shadow:
-			0 1px 0 rgba(255, 255, 255, 0.08),
-			0 10px 22px rgba(0, 0, 0, 0.42);
-	}
-
-	:global(:root.dark) .diary-header-subtitle {
+	:global(:root.dark) .diary-summary span {
 		color: rgba(255, 255, 255, 0.7);
-		opacity: 1;
-	}
-
-	:global(:root.dark) .diary-header-count {
-		color: oklch(0.78 0.15 var(--hue));
-		background: oklch(0.62 0.13 var(--hue) / 0.16);
-	}
-
-	:global(:root.dark) .diary-header-count span:last-child {
-		color: rgba(255, 255, 255, 0.62);
-		opacity: 1;
+		text-shadow:
+			0 1px 1px rgba(0, 0, 0, 0.35),
+			0 0 12px oklch(0.74 0.14 var(--hue) / 0.28);
 	}
 
 	:global(.diary-filter) {
@@ -623,13 +534,8 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 	}
 
 	@media (width < 640px) {
-		.diary-header {
-			border-radius: 0.9rem;
-		}
-
-		.diary-header-count {
-			min-width: 3.6rem;
-			padding: 0.45rem 0.65rem;
+		.diary-summary {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>
