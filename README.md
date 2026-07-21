@@ -2,7 +2,7 @@
 
 这是我的个人博客仓库，用来记录学习、项目、工具配置、问题排查和一些生活片段。
 
-站点基于 [Astro](https://astro.build/) 和 Mizuki 模板改造，目前已经按个人使用习惯调整了视觉、导航、友链、日记页、项目页和关于页。
+站点基于 [Astro](https://astro.build/) 和 [Mizuki](https://github.com/LyraVoid/Mizuki/) 模板改造，目前已经按个人使用习惯调整了视觉、导航、友链、日记页、项目页和关于页。
 
 ## 内容方向
 
