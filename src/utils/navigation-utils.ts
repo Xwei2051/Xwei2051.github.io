@@ -203,7 +203,9 @@ export function initLinkPreloading(): void {
 
 	const preloadPrimaryRoutes = () => {
 		["/", "/archive/", "/diary/", "/projects/", "/friends/", "/about/"].forEach(
-			(path) => schedulePreload(new URL(path, window.location.origin).href),
+			(path) => {
+				schedulePreload(new URL(path, window.location.origin).href);
+			},
 		);
 	};
 
@@ -223,18 +225,16 @@ export function initLinkPreloading(): void {
 
 	// 观察所有内部链接
 	const observeLinks = () => {
-		document
-			.querySelectorAll<HTMLAnchorElement>("a[href]")
-			.forEach((link) => {
-				const href = link.href;
-				if (!href || !isSameOrigin(href)) {
-					return;
-				}
-				if (link.target === "_blank" || link.hasAttribute("download")) {
-					return;
-				}
-				observer.observe(link);
-			});
+		document.querySelectorAll<HTMLAnchorElement>("a[href]").forEach((link) => {
+			const href = link.href;
+			if (!href || !isSameOrigin(href)) {
+				return;
+			}
+			if (link.target === "_blank" || link.hasAttribute("download")) {
+				return;
+			}
+			observer.observe(link);
+		});
 	};
 
 	// 初始观察
