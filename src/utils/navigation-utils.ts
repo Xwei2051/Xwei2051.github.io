@@ -179,32 +179,40 @@ export function initLinkPreloading(): void {
 	// 已预加载的 URL 集合，避免重复预加载
 	const preloadedUrls = new Set<string>();
 
+	const schedulePreload = (href: string, delay = 100) => {
+		if (
+			!href ||
+			!isSameOrigin(href) ||
+			preloadedUrls.has(href) ||
+			href === window.location.href ||
+			href.includes("#")
+		) {
+			return;
+		}
+
+		preloadedUrls.add(href);
+
+		if ("requestIdleCallback" in window) {
+			requestIdleCallback(() => preloadPage(href), {
+				timeout: 2000,
+			});
+		} else {
+			setTimeout(() => preloadPage(href), delay);
+		}
+	};
+
+	const preloadPrimaryRoutes = () => {
+		["/", "/archive/", "/diary/", "/projects/", "/friends/", "/about/"].forEach(
+			(path) => schedulePreload(new URL(path, window.location.origin).href),
+		);
+	};
+
 	const observer = new IntersectionObserver(
 		(entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
 					const link = entry.target as HTMLAnchorElement;
-					const href = link.href;
-
-					// 检查是否有效、是否同源、是否已预加载、是否当前页面
-					if (
-						href &&
-						isSameOrigin(href) &&
-						!preloadedUrls.has(href) &&
-						href !== window.location.href &&
-						!href.includes("#")
-					) {
-						preloadedUrls.add(href);
-
-						// 使用 requestIdleCallback 在空闲时预加载
-						if ("requestIdleCallback" in window) {
-							requestIdleCallback(() => preloadPage(href), {
-								timeout: 2000,
-							});
-						} else {
-							setTimeout(() => preloadPage(href), 100);
-						}
-					}
+					schedulePreload(link.href);
 				}
 			});
 		},
@@ -216,14 +224,22 @@ export function initLinkPreloading(): void {
 	// 观察所有内部链接
 	const observeLinks = () => {
 		document
-			.querySelectorAll('a[href^="/"], a[href^="./"], a[href^="../"]')
+			.querySelectorAll<HTMLAnchorElement>("a[href]")
 			.forEach((link) => {
+				const href = link.href;
+				if (!href || !isSameOrigin(href)) {
+					return;
+				}
+				if (link.target === "_blank" || link.hasAttribute("download")) {
+					return;
+				}
 				observer.observe(link);
 			});
 	};
 
 	// 初始观察
 	observeLinks();
+	preloadPrimaryRoutes();
 
 	// 页面切换后重新观察（Swup 会替换 main 容器内容）
 	const mainContainer = document.querySelector("main");
