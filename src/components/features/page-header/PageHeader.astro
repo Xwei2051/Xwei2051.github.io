@@ -84,6 +84,13 @@ const {
 		-webkit-background-clip: text;
 	}
 
+	:global(:root.dark) .page-header-kicker {
+		color: rgba(255, 255, 255, 0.72);
+		text-shadow:
+			0 1px 1px rgba(0, 0, 0, 0.35),
+			0 0 12px oklch(0.74 0.14 var(--hue) / 0.32);
+	}
+
 	:global(:root.dark) .page-header-subtitle {
 		color: rgba(255, 255, 255, 0.68);
 		opacity: 1;

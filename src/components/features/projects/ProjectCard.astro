@@ -238,6 +238,18 @@ const getStatusText = (status: string) => {
 		color: rgba(255, 255, 255, 0.78);
 	}
 
+	:global(:root.dark) .project-status,
+	:global(:root.dark) .project-tech {
+		border-color: oklch(0.72 0.13 var(--hue) / 0.34);
+		background: oklch(0.62 0.12 var(--hue) / 0.18);
+		color: rgba(255, 255, 255, 0.78);
+		text-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
+	}
+
+	:global(:root.dark) .project-tech-more {
+		color: rgba(255, 255, 255, 0.62);
+	}
+
 	@keyframes fadeInUp {
 		from {
 			opacity: 0;
