@@ -92,12 +92,12 @@ banner = getDefaultBanner();
 const enableBanner = !!siteConfig.banner.src;
 
 let pageTitle: string;
+const browserTitleBase =
+	profileConfig.name || siteConfig.navbarTitle.text || siteConfig.title;
 if (title) {
-	pageTitle = `${title} - ${siteConfig.title}`;
+	pageTitle = `${title} - ${browserTitleBase}`;
 } else {
-	pageTitle = siteConfig.subtitle
-		? `${siteConfig.title} - ${siteConfig.subtitle}`
-		: siteConfig.title;
+	pageTitle = browserTitleBase;
 }
 
 let ogImageUrl: string | undefined;
