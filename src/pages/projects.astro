@@ -36,21 +36,6 @@ const getCategoryText = (category: string) => {
 	}
 };
 
-const getCategoryIcon = (category: string) => {
-	switch (category) {
-		case "web":
-			return "material-symbols:language";
-		case "mobile":
-			return "material-symbols:smartphone";
-		case "desktop":
-			return "material-symbols:desktop-windows";
-		case "other":
-			return "material-symbols:widgets";
-		default:
-			return "material-symbols:folder";
-	}
-};
-
 const filterTabs = [
 	{
 		value: "all",
@@ -60,7 +45,6 @@ const filterTabs = [
 	...categories.map((category) => ({
 		value: category,
 		label: getCategoryText(category),
-		icon: getCategoryIcon(category),
 	})),
 ];
 

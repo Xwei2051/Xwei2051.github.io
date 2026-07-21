@@ -5,6 +5,7 @@ import FriendCard from "@components/features/friends/FriendCard.astro";
 import { PageHeader } from "@components/features/page-header";
 import Markdown from "@components/misc/Markdown.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { Icon } from "astro-icon/components";
 
 import { siteConfig } from "../config";
 import { getShuffledFriendsList } from "../data/friends";
@@ -78,6 +79,7 @@ const allTags = Array.from(new Set(friendsList.flatMap((item) => item.tags)));
 				<!-- 标签筛选 -->
 				<div class="filter-container flex flex-wrap gap-2">
 					<button class="filter-tag active" data-tag="all">
+						<Icon name="material-symbols:apps" />
 						{i18n(I18nKey.friendsFilterAll)}
 					</button>
 					{
@@ -170,6 +172,9 @@ const allTags = Array.from(new Set(friendsList.flatMap((item) => item.tags)));
 	}
 
 	.filter-tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
 		padding: 0.48rem 0.95rem;
 		border: 1px solid color-mix(in oklab, var(--primary) 15%, var(--line-divider));
 		border-radius: var(--radius-large);
@@ -180,6 +185,11 @@ const allTags = Array.from(new Set(friendsList.flatMap((item) => item.tags)));
 		cursor: pointer;
 		transition: all 0.2s ease;
 		white-space: nowrap;
+	}
+
+	.filter-tag :global(svg) {
+		width: 1rem;
+		height: 1rem;
 	}
 
 	.filter-tag:hover:not(.active) {
