@@ -105,7 +105,7 @@ const projectStats = getProjectStats();
 			</div>
 
 			<div class="mb-8">
-				<FilterTabs tabs={filterTabs} dataAttr="category" />
+				<FilterTabs tabs={filterTabs} dataAttr="category" class="projects-filter" />
 			</div>
 
 			<div
@@ -171,6 +171,62 @@ const projectStats = getProjectStats();
 
 	:global(:root.dark) .projects-summary strong {
 		color: rgba(255, 255, 255, 0.88);
+	}
+
+	:global(:root.dark) .projects-summary span {
+		color: rgba(255, 255, 255, 0.7);
+		text-shadow:
+			0 1px 1px rgba(0, 0, 0, 0.35),
+			0 0 12px oklch(0.74 0.14 var(--hue) / 0.28);
+	}
+
+	:global(.projects-filter) {
+		gap: 0.65rem;
+	}
+
+	:global(.projects-filter .filter-tabs-item) {
+		border: 1px solid color-mix(in oklab, var(--primary) 15%, var(--line-divider));
+		border-radius: 999px;
+		background: color-mix(in oklab, var(--btn-regular-bg) 88%, var(--primary) 7%);
+		color: color-mix(in oklab, var(--primary) 58%, var(--btn-content));
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+	}
+
+	:global(.projects-filter .filter-tabs-item:hover:not(.active)) {
+		border-color: color-mix(in oklab, var(--primary) 38%, transparent);
+		background: color-mix(in oklab, var(--primary) 12%, var(--btn-regular-bg));
+		transform: translateY(-1px);
+	}
+
+	:global(.projects-filter .filter-tabs-item.active) {
+		border-color: transparent;
+		background:
+			linear-gradient(
+				135deg,
+				oklch(0.72 0.15 var(--hue)),
+				oklch(0.68 0.14 calc(var(--hue) + 70))
+			);
+		color: white;
+		box-shadow: 0 8px 18px oklch(0.66 0.15 var(--hue) / 0.18);
+	}
+
+	:global(.projects-filter .filter-tabs-count) {
+		opacity: 0.72;
+	}
+
+	:global(:root.dark .projects-filter .filter-tabs-item) {
+		border-color: oklch(0.72 0.13 var(--hue) / 0.24);
+		background: oklch(0.62 0.12 var(--hue) / 0.12);
+		color: rgba(255, 255, 255, 0.74);
+	}
+
+	:global(:root.dark .projects-filter .filter-tabs-item:hover:not(.active)) {
+		border-color: oklch(0.74 0.13 var(--hue) / 0.42);
+		background: oklch(0.62 0.12 var(--hue) / 0.18);
+	}
+
+	:global(:root.dark .projects-filter .filter-tabs-item.active) {
+		color: white;
 	}
 
 	@media (width < 640px) {
