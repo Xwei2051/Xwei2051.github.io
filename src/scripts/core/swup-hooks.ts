@@ -548,23 +548,42 @@ export class SwupHooksManager {
 			return;
 		}
 
-		const title = dataEl.dataset.title || "";
-		if (!title) {
+		const rawTitle = dataEl.dataset.title || "";
+		if (!rawTitle) {
 			this.clearOverlay(overlay);
 			return;
 		}
 
+		const overlayCopy = this.getPageOverlayCopy(
+			dataEl.dataset.path || window.location.pathname,
+			rawTitle,
+			dataEl.dataset.isPost === "true",
+		);
 		const titleEl = document.getElementById("page-overlay-title");
+		const kickerEl = document.getElementById("page-overlay-kicker");
+		const subtitleEl = document.getElementById("page-overlay-subtitle");
 		const metaEl = document.getElementById("page-overlay-meta");
 		const dateEl = document.getElementById("page-overlay-date");
 		const categoryEl = document.getElementById("page-overlay-category");
 		const wordsEl = document.getElementById("page-overlay-words");
-		if (!titleEl || !metaEl || !dateEl || !categoryEl || !wordsEl) {
+		if (
+			!titleEl ||
+			!kickerEl ||
+			!subtitleEl ||
+			!metaEl ||
+			!dateEl ||
+			!categoryEl ||
+			!wordsEl
+		) {
 			return;
 		}
 
-		titleEl.textContent = title;
+		titleEl.textContent = overlayCopy.title;
+		kickerEl.textContent = overlayCopy.kicker;
+		subtitleEl.textContent = overlayCopy.subtitle;
 		titleEl.classList.remove("anim-in");
+		kickerEl.classList.remove("anim-in");
+		subtitleEl.classList.remove("anim-in");
 
 		const isPost = dataEl.dataset.isPost === "true";
 		const date = dataEl.dataset.date || "";
@@ -583,7 +602,9 @@ export class SwupHooksManager {
 			overlay.style.filter = "";
 
 			void titleEl.offsetWidth;
+			kickerEl.classList.add("anim-in");
 			titleEl.classList.add("anim-in");
+			subtitleEl.classList.add("anim-in");
 			void metaEl.offsetWidth;
 			metaEl.classList.add("anim-in");
 		} else {
@@ -592,16 +613,84 @@ export class SwupHooksManager {
 			overlay.style.transform = "";
 			overlay.style.filter = "";
 			void titleEl.offsetWidth;
+			kickerEl.classList.add("anim-in");
 			titleEl.classList.add("anim-in");
+			subtitleEl.classList.add("anim-in");
 		}
+	}
+
+	private getPageOverlayCopy(
+		pathname: string,
+		title: string,
+		isPost: boolean,
+	): { kicker: string; title: string; subtitle: string } {
+		if (isPost) {
+			return {
+				kicker: "FIELD NOTE",
+				title,
+				subtitle: "一条被整理过的学习现场",
+			};
+		}
+
+		const normalizedPath = pathname.endsWith("/")
+			? pathname
+			: `${pathname}/`;
+		const pageCopy: Record<
+			string,
+			{ kicker: string; title: string; subtitle: string }
+		> = {
+			"/archive/": {
+				kicker: "SIGNAL ARCHIVE",
+				title: "信号归档",
+				subtitle: "把学习、项目和问题按时间折叠成线索",
+			},
+			"/diary/": {
+				kicker: "DAILY PULSE",
+				title: "日常切片",
+				subtitle: "记录状态、节奏和那些没有被浪费的瞬间",
+			},
+			"/projects/": {
+				kicker: "WORKBENCH",
+				title: "项目工坊",
+				subtitle: "把想法落到代码、页面和可以打开的作品里",
+			},
+			"/friends/": {
+				kicker: "LINK CONSTELLATION",
+				title: "连接星图",
+				subtitle: "那些值得长期路过、也值得认真访问的地方",
+			},
+			"/about/": {
+				kicker: "ABOUT XWEI2051",
+				title: "个人坐标",
+				subtitle: "在现实问题和技术系统之间，建立自己的长期坐标",
+			},
+		};
+
+		return (
+			pageCopy[normalizedPath] || {
+				kicker: "XWEI2051",
+				title,
+				subtitle: "这里收纳一段正在展开的记录",
+			}
+		);
 	}
 
 	private clearOverlay(overlay: HTMLElement): void {
 		const titleEl = document.getElementById("page-overlay-title");
+		const kickerEl = document.getElementById("page-overlay-kicker");
+		const subtitleEl = document.getElementById("page-overlay-subtitle");
 		const metaEl = document.getElementById("page-overlay-meta");
 		if (titleEl) {
 			titleEl.textContent = "";
 			titleEl.classList.remove("anim-in");
+		}
+		if (kickerEl) {
+			kickerEl.textContent = "";
+			kickerEl.classList.remove("anim-in");
+		}
+		if (subtitleEl) {
+			subtitleEl.textContent = "";
+			subtitleEl.classList.remove("anim-in");
 		}
 		if (metaEl) {
 			metaEl.classList.add("hidden");

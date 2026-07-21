@@ -939,28 +939,60 @@ html.is-page-transitioning #header-waves {
   will-change: opacity, transform, filter;
 }
 
-.banner-page-overlay .page-overlay-title {
+.banner-page-overlay .page-overlay-kicker,
+.banner-page-overlay .page-overlay-title,
+.banner-page-overlay .page-overlay-subtitle {
   will-change: opacity, transform, filter;
 }
 
+.banner-page-overlay .page-overlay-kicker.anim-in {
+  animation: pageOverlayKickerIn 0.62s ease-out both;
+}
+
 .banner-page-overlay .page-overlay-title.anim-in {
-  animation: overlayTitleIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+  animation: pageOverlayTitleIn 0.76s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+.banner-page-overlay .page-overlay-subtitle.anim-in {
+  animation: pageOverlaySubtitleIn 0.7s ease-out 0.18s both;
 }
 
 .banner-page-overlay .page-overlay-meta.anim-in {
   animation: overlayMetaIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
 }
 
-@keyframes overlayTitleIn {
+@keyframes pageOverlayKickerIn {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageOverlayTitleIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
     filter: blur(6px);
   }
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
     filter: blur(0);
+  }
+}
+
+@keyframes pageOverlaySubtitleIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

@@ -244,6 +244,7 @@ const defaultPostListLayout = siteConfig.postListLayout?.defaultMode || "list";
 							data-words={wordCount ? String(wordCount) : ""}
 							data-is-post={postSlug ? "true" : "false"}
 							data-is-home={isHomePage ? "true" : "false"}
+							data-path={Astro.url.pathname}
 							data-wallpaper-mode={siteConfig.wallpaperMode.defaultMode}
 							class="hidden"
 						>

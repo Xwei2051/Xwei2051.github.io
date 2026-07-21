@@ -642,8 +642,10 @@ const bannerFormats = getImageFormats();
 
 	<!-- 非首页页面标题覆盖层（持久化容器，JS 动态填充文本） -->
 	<div id="banner-page-overlay" class="banner-page-overlay hidden lg:flex absolute inset-0 z-20 pointer-events-none">
-		<div class="flex flex-col items-center justify-center w-full text-center px-4">
-			<h2 id="page-overlay-title" class="page-overlay-title text-3xl lg:text-5xl text-white font-bold drop-shadow-lg px-4"></h2>
+		<div class="page-overlay-inner flex flex-col items-center justify-center w-full text-center px-4">
+			<div id="page-overlay-kicker" class="page-overlay-kicker"></div>
+			<h2 id="page-overlay-title" class="page-overlay-title"></h2>
+			<p id="page-overlay-subtitle" class="page-overlay-subtitle"></p>
 			<div id="page-overlay-meta" class="page-overlay-meta hidden flex-wrap items-center justify-center gap-x-5 gap-y-2 text-white/80 text-sm md:text-base mt-4">
 				<span class="inline-flex items-center gap-1.5">
 					<Icon name="material-symbols:calendar-month-outline-rounded" class="text-[1.05em]" />
@@ -843,6 +845,136 @@ const bannerFormats = getImageFormats();
 
 		.banner-subtitle span {
 			min-width: 0;
+		}
+	}
+
+	.banner-page-overlay {
+		align-items: center;
+		justify-content: center;
+	}
+
+	.page-overlay-inner {
+		transform: translateY(-0.8rem);
+	}
+
+	.page-overlay-kicker {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.8rem;
+		margin-bottom: 0.85rem;
+		font-size: 0.78rem;
+		font-weight: 700;
+		line-height: 1;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: oklch(0.88 0.12 calc(var(--hue) + 80));
+		text-shadow:
+			0 8px 18px rgba(0, 0, 0, 0.55),
+			0 0 16px oklch(0.72 0.16 var(--hue) / 0.38);
+		opacity: 0;
+	}
+
+	.page-overlay-kicker::before,
+	.page-overlay-kicker::after {
+		content: "";
+		width: 3rem;
+		height: 1px;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			oklch(0.82 0.14 var(--hue) / 0.72)
+		);
+		box-shadow: 0 0 14px oklch(0.72 0.16 var(--hue) / 0.42);
+	}
+
+	.page-overlay-kicker::after {
+		transform: rotate(180deg);
+	}
+
+	.page-overlay-title {
+		margin: 0;
+		padding-inline: 1rem;
+		font-size: clamp(3rem, 7vw, 5.6rem);
+		font-weight: 820;
+		line-height: 1.04;
+		letter-spacing: 0;
+		color: transparent;
+		background:
+			linear-gradient(
+				115deg,
+				rgba(255, 255, 255, 0.96) 0%,
+				oklch(0.88 0.16 calc(var(--hue) + 24)) 42%,
+				oklch(0.96 0.08 calc(var(--hue) + 150)) 100%
+			);
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-stroke: 1px rgba(255, 255, 255, 0.22);
+		filter:
+			drop-shadow(0 12px 18px rgba(0, 0, 0, 0.5))
+			drop-shadow(0 0 18px oklch(0.72 0.18 var(--hue) / 0.32));
+		opacity: 0;
+	}
+
+	.page-overlay-subtitle {
+		max-width: min(42rem, 88vw);
+		margin: 0.85rem auto 0;
+		font-size: clamp(1rem, 1.8vw, 1.35rem);
+		font-weight: 420;
+		line-height: 1.6;
+		letter-spacing: 0;
+		color: rgba(255, 255, 255, 0.86);
+		text-shadow:
+			0 8px 18px rgba(0, 0, 0, 0.58),
+			0 0 14px oklch(0.7 0.16 var(--hue) / 0.28);
+		opacity: 0;
+	}
+
+	.page-overlay-kicker.anim-in {
+		animation: pageOverlayKickerIn 0.62s ease-out both;
+	}
+
+	.page-overlay-title.anim-in {
+		animation: pageOverlayTitleIn 0.76s cubic-bezier(0.22, 1, 0.36, 1)
+			0.08s both;
+	}
+
+	.page-overlay-subtitle.anim-in {
+		animation: pageOverlaySubtitleIn 0.7s ease-out 0.18s both;
+	}
+
+	@keyframes pageOverlayKickerIn {
+		from {
+			opacity: 0;
+			transform: translateY(12px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes pageOverlayTitleIn {
+		from {
+			opacity: 0;
+			transform: translateY(18px) scale(0.98);
+			filter:
+				blur(6px)
+				drop-shadow(0 12px 18px rgba(0, 0, 0, 0.5));
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes pageOverlaySubtitleIn {
+		from {
+			opacity: 0;
+			transform: translateY(12px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
 		}
 	}
 
