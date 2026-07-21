@@ -47,7 +47,7 @@ const title = i18n(I18nKey.about);
 	.about-page .about-hero {
 		position: relative;
 		margin: 0 0 2rem;
-		padding: 1.6rem 0 1.9rem;
+		padding: 1.25rem 0 1.65rem;
 		border-block: 1px solid var(--about-line);
 	}
 
@@ -66,7 +66,7 @@ const title = i18n(I18nKey.about);
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
-		margin-bottom: 1.4rem;
+		margin-bottom: 1.15rem;
 	}
 
 	.about-page .about-title-row span {
@@ -91,9 +91,14 @@ const title = i18n(I18nKey.about);
 
 	.about-page .about-hero-body {
 		display: grid;
-		grid-template-columns: minmax(18rem, 0.88fr) minmax(24rem, 1.12fr);
-		gap: clamp(2rem, 4.5vw, 4.5rem);
-		align-items: end;
+		grid-template-columns: minmax(16rem, 0.72fr) minmax(26rem, 1.28fr);
+		gap: clamp(1.8rem, 4vw, 3.6rem);
+		align-items: center;
+	}
+
+	.about-page .about-name-block {
+		min-width: 0;
+		padding-top: 0;
 	}
 
 	.about-page .about-name-block p {
@@ -116,7 +121,7 @@ const title = i18n(I18nKey.about);
 			Inter,
 			"Microsoft YaHei",
 			sans-serif;
-		font-size: clamp(3rem, 5.5vw, 5.25rem);
+		font-size: clamp(2.9rem, 4.75vw, 4.55rem);
 		font-style: normal;
 		font-weight: 850;
 		line-height: 1.02;
@@ -138,8 +143,8 @@ const title = i18n(I18nKey.about);
 		position: absolute;
 		left: 0.03em;
 		right: 0.09em;
-		bottom: -0.1em;
-		height: 0.08em;
+		bottom: -0.08em;
+		height: 0.06em;
 		border-radius: 999px;
 		background: linear-gradient(
 			90deg,
@@ -152,8 +157,19 @@ const title = i18n(I18nKey.about);
 
 	.about-page .about-copy {
 		position: relative;
-		padding-left: 1.4rem;
-		border-left: 2px solid var(--about-line);
+		max-width: 52rem;
+		padding-left: 0;
+	}
+
+	.about-page .about-copy::before {
+		content: "";
+		display: block;
+		width: 3.6rem;
+		height: 2px;
+		margin-bottom: 1rem;
+		border-radius: 999px;
+		background: linear-gradient(90deg, var(--primary), transparent);
+		opacity: 0.78;
 	}
 
 	.about-page .about-copy p {
@@ -284,7 +300,7 @@ const title = i18n(I18nKey.about);
 		}
 
 		.about-page .about-copy {
-			padding-left: 1rem;
+			padding-left: 0;
 		}
 
 		.about-page .about-facts {
