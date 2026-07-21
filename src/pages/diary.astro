@@ -22,12 +22,10 @@ const filterTabs = [
 		value: "all",
 		label: i18n(I18nKey.albumsFilterAll),
 		icon: "material-symbols:apps",
-		count: moments.length,
 	},
 	...allTags.map((tag) => ({
 		value: tag,
 		label: tag,
-		count: moments.filter((m) => m.tags?.includes(tag)).length,
 	})),
 ];
 
@@ -59,19 +57,19 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 		<div class="card-base z-10 px-6 sm:px-9 py-6 relative w-full overflow-hidden">
 			<PageHeader title={title} />
 
-			<div class="diary-summary mb-8">
-				<div>
-					<span>ENTRIES</span>
-					<strong data-diary-count>{moments.length}</strong>
-				</div>
-				<div>
-					<span>TAGS</span>
-					<strong data-diary-tag-count>{allTags.length}</strong>
-				</div>
-				<div>
-					<span>FIELD NOTES</span>
-					<strong>{moments.length > 0 ? "ON" : "IDLE"}</strong>
-				</div>
+			<div class="diary-meta mb-8">
+				<span>
+					<Icon name="material-symbols:edit-note-rounded" />
+					<strong data-diary-count>{moments.length}</strong> 条日记
+				</span>
+				<span>
+					<Icon name="material-symbols:label-rounded" />
+					<strong data-diary-tag-count>{allTags.length}</strong> 个标签
+				</span>
+				<span>
+					<Icon name="material-symbols:radio-button-checked" />
+					{moments.length > 0 ? "持续记录中" : "等待第一条记录"}
+				</span>
 			</div>
 
 			<!-- Content -->
@@ -340,26 +338,16 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 						allTab.setAttribute("data-filter-attr", "tags");
 						allTab.innerHTML =
 							'<iconify-icon icon="material-symbols:apps"></iconify-icon>' +
-							'<span class="count">' +
-							moments.length +
-							"</span>";
+							"<span>全部</span>";
 						filterContainer.appendChild(allTab);
 
 						// Create tag tabs
 						allTags.forEach(function (tag) {
-							const count = moments.filter(function (m) {
-				return m.tags && m.tags.indexOf(tag) !== -1;
-			}).length;
 							const tab = document.createElement("button");
 							tab.className = "filter-tabs-item";
 							tab.setAttribute("data-filter-value", tag);
 							tab.setAttribute("data-filter-attr", "tags");
-							tab.innerHTML =
-								"<span>" +
-								escapeHtml(tag) +
-								'</span><span class="count">' +
-								count +
-								"</span>";
+							tab.innerHTML = "<span>" + escapeHtml(tag) + "</span>";
 							filterContainer.appendChild(tab);
 						});
 
@@ -421,51 +409,48 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 </MainGridLayout>
 
 <style>
-	.diary-summary {
-		display: grid;
-		grid-template-columns: minmax(8rem, 1.15fr) repeat(2, minmax(0, 1fr));
-		gap: 0.75rem;
+	.diary-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.55rem;
+		margin-top: -0.75rem;
 	}
 
-	.diary-summary div {
-		position: relative;
-		overflow: hidden;
-		padding: 0.9rem 1rem;
+	.diary-meta span {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		min-height: 2rem;
+		padding: 0.35rem 0.72rem;
 		border: 1px solid color-mix(in oklab, var(--primary) 16%, var(--line-divider));
-		border-radius: 0.85rem;
-		background:
-			linear-gradient(
-				90deg,
-				oklch(0.72 0.15 var(--hue) / 0.1),
-				transparent 46%
-			),
-			color-mix(in oklab, var(--btn-regular-bg) 92%, var(--primary) 6%);
-	}
-
-	.diary-summary span {
-		display: block;
-		margin-bottom: 0.3rem;
-		color: color-mix(in oklab, var(--primary) 68%, var(--regular-text));
-		font-size: 0.68rem;
-		font-weight: 750;
-		letter-spacing: 0.12em;
-	}
-
-	.diary-summary strong {
-		color: var(--deep-text);
-		font-size: 1.55rem;
+		border-radius: 999px;
+		background: color-mix(in oklab, var(--btn-regular-bg) 90%, var(--primary) 6%);
+		color: color-mix(in oklab, var(--regular-text) 82%, var(--primary));
+		font-size: 0.84rem;
+		font-weight: 560;
 		line-height: 1;
 	}
 
-	:global(:root.dark) .diary-summary strong {
-		color: rgba(255, 255, 255, 0.88);
+	.diary-meta :global(svg) {
+		width: 1rem;
+		height: 1rem;
+		color: oklch(0.74 0.15 var(--hue));
 	}
 
-	:global(:root.dark) .diary-summary span {
-		color: rgba(255, 255, 255, 0.7);
-		text-shadow:
-			0 1px 1px rgba(0, 0, 0, 0.35),
-			0 0 12px oklch(0.74 0.14 var(--hue) / 0.28);
+	.diary-meta strong {
+		color: var(--deep-text);
+		font-weight: 800;
+	}
+
+	:global(:root.dark) .diary-meta span {
+		border-color: oklch(0.72 0.13 var(--hue) / 0.2);
+		background: oklch(0.62 0.12 var(--hue) / 0.1);
+		color: rgba(255, 255, 255, 0.68);
+	}
+
+	:global(:root.dark) .diary-meta strong {
+		color: rgba(255, 255, 255, 0.9);
 	}
 
 	:global(.diary-filter) {
@@ -534,8 +519,8 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 	}
 
 	@media (width < 640px) {
-		.diary-summary {
-			grid-template-columns: 1fr;
+		.diary-meta {
+			margin-top: -0.5rem;
 		}
 	}
 </style>

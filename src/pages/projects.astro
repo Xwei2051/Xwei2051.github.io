@@ -56,13 +56,11 @@ const filterTabs = [
 		value: "all",
 		label: i18n(I18nKey.friendsFilterAll),
 		icon: "material-symbols:apps",
-		count: projectsData.length,
 	},
 	...categories.map((category) => ({
 		value: category,
 		label: getCategoryText(category),
 		icon: getCategoryIcon(category),
-		count: projectsData.filter((p) => p.category === category).length,
 	})),
 ];
 
@@ -89,19 +87,19 @@ const projectStats = getProjectStats();
 		<div class="card-base z-10 px-6 sm:px-9 py-6 relative w-full">
 			<PageHeader title={title} subtitle={subtitle} />
 
-			<div class="projects-summary mb-8">
-				<div>
-					<span>PROJECTS</span>
-					<strong>{projectStats.total}</strong>
-				</div>
-				<div>
-					<span>BUILDING</span>
-					<strong>{projectStats.byStatus.inProgress}</strong>
-				</div>
-				<div>
-					<span>SHIPPED</span>
-					<strong>{projectStats.byStatus.completed}</strong>
-				</div>
+			<div class="projects-meta mb-8">
+				<span>
+					<Icon name="material-symbols:dashboard-rounded" />
+					<strong>{projectStats.total}</strong> 个项目
+				</span>
+				<span>
+					<Icon name="material-symbols:construction-rounded" />
+					<strong>{projectStats.byStatus.inProgress}</strong> 个进行中
+				</span>
+				<span>
+					<Icon name="material-symbols:verified-rounded" />
+					<strong>{projectStats.byStatus.completed}</strong> 个完成
+				</span>
 			</div>
 
 			<div class="mb-8">
@@ -133,51 +131,48 @@ const projectStats = getProjectStats();
 </MainGridLayout>
 
 <style>
-	.projects-summary {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 0.75rem;
+	.projects-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.55rem;
+		margin-top: -0.75rem;
 	}
 
-	.projects-summary div {
-		position: relative;
-		overflow: hidden;
-		padding: 0.9rem 1rem;
+	.projects-meta span {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		min-height: 2rem;
+		padding: 0.35rem 0.72rem;
 		border: 1px solid color-mix(in oklab, var(--primary) 16%, var(--line-divider));
-		border-radius: 0.85rem;
-		background:
-			radial-gradient(
-				circle at 88% 0%,
-				oklch(0.72 0.16 var(--hue) / 0.12),
-				transparent 42%
-			),
-			color-mix(in oklab, var(--btn-regular-bg) 92%, var(--primary) 6%);
-	}
-
-	.projects-summary span {
-		display: block;
-		margin-bottom: 0.3rem;
-		color: color-mix(in oklab, var(--primary) 68%, var(--regular-text));
-		font-size: 0.68rem;
-		font-weight: 750;
-		letter-spacing: 0.12em;
-	}
-
-	.projects-summary strong {
-		color: var(--deep-text);
-		font-size: 1.55rem;
+		border-radius: 999px;
+		background: color-mix(in oklab, var(--btn-regular-bg) 90%, var(--primary) 6%);
+		color: color-mix(in oklab, var(--regular-text) 82%, var(--primary));
+		font-size: 0.84rem;
+		font-weight: 560;
 		line-height: 1;
 	}
 
-	:global(:root.dark) .projects-summary strong {
-		color: rgba(255, 255, 255, 0.88);
+	.projects-meta :global(svg) {
+		width: 1rem;
+		height: 1rem;
+		color: oklch(0.74 0.15 var(--hue));
 	}
 
-	:global(:root.dark) .projects-summary span {
-		color: rgba(255, 255, 255, 0.7);
-		text-shadow:
-			0 1px 1px rgba(0, 0, 0, 0.35),
-			0 0 12px oklch(0.74 0.14 var(--hue) / 0.28);
+	.projects-meta strong {
+		color: var(--deep-text);
+		font-weight: 800;
+	}
+
+	:global(:root.dark) .projects-meta span {
+		border-color: oklch(0.72 0.13 var(--hue) / 0.2);
+		background: oklch(0.62 0.12 var(--hue) / 0.1);
+		color: rgba(255, 255, 255, 0.68);
+	}
+
+	:global(:root.dark) .projects-meta strong {
+		color: rgba(255, 255, 255, 0.9);
 	}
 
 	:global(.projects-filter) {
@@ -244,8 +239,8 @@ const projectStats = getProjectStats();
 	}
 
 	@media (width < 640px) {
-		.projects-summary {
-			grid-template-columns: 1fr;
+		.projects-meta {
+			margin-top: -0.5rem;
 		}
 	}
 </style>
