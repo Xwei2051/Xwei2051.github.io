@@ -1,9 +1,11 @@
 ---
 import ArchivePanel from "@components/features/archive/ArchivePanel.svelte";
+import { PageHeader } from "@components/features/page-header";
 import CategoryBar from "@components/features/posts/CategoryBar.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { Icon } from "astro-icon/components";
 import { getSortedPostsList } from "@utils/content-utils";
 
 import { siteConfig } from "../config";
@@ -46,11 +48,86 @@ const categories = [
 		import("../scripts/right-sidebar-layout.js");
 	</script>
 
-	<!-- 修复：补全缺失的 tags 和 categories 属性 -->
-	<ArchivePanel
-		sortedPosts={posts}
-		tags={tags}
-		categories={categories}
-		client:only="svelte"
-	/>
+	<div
+		class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32"
+	>
+		<div class="card-base z-10 px-6 sm:px-9 py-6 relative w-full">
+			<PageHeader title={i18n(I18nKey.archive)} />
+
+			<div class="archive-meta mb-8">
+				<span>
+					<Icon name="material-symbols:article-rounded" />
+					<strong>{posts.length}</strong> 篇文章
+				</span>
+				<span>
+					<Icon name="material-symbols:folder-rounded" />
+					<strong>{categories.length}</strong> 个分类
+				</span>
+				<span>
+					<Icon name="material-symbols:label-rounded" />
+					<strong>{tags.length}</strong> 个标签
+				</span>
+			</div>
+
+			<!-- 修复：补全缺失的 tags 和 categories 属性 -->
+			<ArchivePanel
+				sortedPosts={posts}
+				tags={tags}
+				categories={categories}
+				client:only="svelte"
+			/>
+		</div>
+	</div>
 </MainGridLayout>
+
+<style>
+	.archive-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.55rem;
+		margin-top: -0.75rem;
+	}
+
+	.archive-meta span {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		min-height: 2rem;
+		padding: 0.35rem 0.72rem;
+		border: 1px solid color-mix(in oklab, var(--primary) 16%, var(--line-divider));
+		border-radius: 999px;
+		background: color-mix(in oklab, var(--btn-regular-bg) 90%, var(--primary) 6%);
+		color: color-mix(in oklab, var(--regular-text) 82%, var(--primary));
+		font-size: 0.84rem;
+		font-weight: 560;
+		line-height: 1;
+	}
+
+	.archive-meta :global(svg) {
+		width: 1rem;
+		height: 1rem;
+		color: oklch(0.74 0.15 var(--hue));
+	}
+
+	.archive-meta strong {
+		color: var(--deep-text);
+		font-weight: 800;
+	}
+
+	:global(:root.dark) .archive-meta span {
+		border-color: oklch(0.72 0.13 var(--hue) / 0.2);
+		background: oklch(0.62 0.12 var(--hue) / 0.1);
+		color: rgba(255, 255, 255, 0.68);
+	}
+
+	:global(:root.dark) .archive-meta strong {
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+	@media (width < 640px) {
+		.archive-meta {
+			margin-top: -0.5rem;
+		}
+	}
+</style>
