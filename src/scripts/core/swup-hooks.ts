@@ -3,6 +3,7 @@
  * 处理页面过渡过程中的各种钩子事件
  */
 
+import { DEFAULT_THEME } from "../../constants/constants";
 import { pathsEqual, url } from "../../utils/url-utils";
 import type { FancyboxHandler } from "../handlers/fancybox-handler";
 import type { ScrollHandler } from "../handlers/scroll-handler";
@@ -664,7 +665,7 @@ export class SwupHooksManager {
 	private syncThemeState(): void {
 		const storedTheme =
 			localStorage.getItem(THEME_CONFIG.themeStorageKey) ||
-			THEME_CONFIG.lightMode;
+			DEFAULT_THEME;
 		const isDark = storedTheme === THEME_CONFIG.darkMode;
 		const expectedTheme = isDark
 			? THEME_CONFIG.darkExpressiveTheme
