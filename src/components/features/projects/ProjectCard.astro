@@ -27,7 +27,7 @@ const getStatusText = (status: string) => {
 ---
 
 <div
-	class="project-card group relative rounded-xl border border-black/10 dark:border-white/10 overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+	class="project-card group relative h-full rounded-xl border border-black/10 dark:border-white/10 overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
 	data-category={project.category}
 >
 	{
@@ -61,7 +61,7 @@ const getStatusText = (status: string) => {
 		)
 	}
 
-	<div class="p-5">
+	<div class="flex h-full flex-col p-5">
 		<div class="flex items-center justify-between mb-3">
 			<h3
 				class="text-lg font-bold text-black/90 dark:text-white/90 truncate group-hover:text-(--primary) transition-colors duration-200"
@@ -98,9 +98,10 @@ const getStatusText = (status: string) => {
 			)
 		}
 
-		{
-			(hasVisitUrl || hasSourceCode) && (
-				<div class="flex gap-2">
+		<div class="mt-auto min-h-10">
+			{
+				(hasVisitUrl || hasSourceCode) && (
+					<div class="flex gap-2">
 					{hasVisitUrl && (
 						<a
 							href={project.visitUrl!}
@@ -128,8 +129,9 @@ const getStatusText = (status: string) => {
 						</a>
 					)}
 				</div>
-			)
-		}
+				)
+			}
+		</div>
 	</div>
 
 	<div

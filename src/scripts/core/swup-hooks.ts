@@ -104,13 +104,29 @@ export class SwupHooksManager {
 				const isFullscreen = this.getCurrentWallpaperMode() === "fullscreen";
 				const isHomePage = pathsEqual(visit.to.url, url("/"));
 				if (isFullscreen && !isHomePage) {
-					const mainGrid = this.getCachedElement("#main-grid") as HTMLElement | null;
-					if (mainGrid) {
-						mainGrid.scrollIntoView({
-							behavior: args.options?.behavior ?? "auto",
-						});
-						return true;
-					}
+					const bannerWrapper = this.getCachedElement(
+						SWUP_SELECTORS.bannerWrapper,
+					) as HTMLElement | null;
+					const navbarWrapper = this.getCachedElement(
+						SWUP_SELECTORS.navbarWrapper,
+					) as HTMLElement | null;
+					const navbarOffset = Math.round(navbarWrapper?.offsetHeight || 72);
+					const targetTop =
+						window.innerWidth < 1280
+							? 0
+							: Math.max(
+									0,
+									Math.round(
+										(bannerWrapper?.offsetHeight || window.innerHeight) -
+											navbarOffset,
+									),
+								);
+					window.scrollTo({
+						top: targetTop,
+						left: 0,
+						behavior: args.options?.behavior ?? "auto",
+					});
+					return true;
 				}
 
 				window.scrollTo({
@@ -153,8 +169,10 @@ export class SwupHooksManager {
 			}
 
 			// 处理 navbar 隐藏
-			if (this.bannerEnabled) {
+			if (this.bannerEnabled && !isSamePage) {
 				this.handleNavbarHideOnLinkClick();
+			} else if (isSamePage) {
+				this.ensureNavbarVisibleForFullscreen();
 			}
 		}) as (...args: unknown[]) => void);
 	}
@@ -451,6 +469,9 @@ export class SwupHooksManager {
 			mainContentWrapper.classList.add("no-banner-layout");
 			mainContentWrapper.style.position = "relative";
 			mainContentWrapper.style.zIndex = "30";
+			if (!isHomePage) {
+				mainContentWrapper.style.setProperty("min-height", "100vh");
+			}
 			mainContentWrapper.style.setProperty("top", "0", "important");
 			mainContentWrapper.style.setProperty(
 				"margin-top",

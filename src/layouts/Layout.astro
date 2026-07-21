@@ -1,5 +1,4 @@
 ---
-import { Font } from "astro:assets";
 import { PageProgressBar } from "@components/control/PageProgressBar";
 import Pio from "@components/features/pio/Pio.astro";
 import ConfigCarrier from "@components/misc/ConfigCarrier.astro";
@@ -130,7 +129,7 @@ const bannerOffsetByPosition = {
 const bannerOffset =
 	bannerOffsetByPosition[siteConfig.banner.position || "center"];
 
-// CSS 变量由 Astro Font API 自动注入，body 字体通过 Tailwind --font-body 应用
+// 字体使用系统字体栈，由全局 CSS 控制。
 ---
 
 <!doctype html>
@@ -144,10 +143,6 @@ const bannerOffset =
 >
 	<head>
 		<meta charset="UTF-8" />
-		<Font cssVariable="--font-body" preload />
-		<Font cssVariable="--font-cjk" />
-		<Font cssVariable="--font-jetbrains-mono" />
-
 		<script is:inline>
 			(function() {
 				try {
@@ -320,4 +315,5 @@ const bannerOffset =
 <!-- 主题切换综合性能优化器（包含代码块优化、重型元素优化、性能诊断） -->
 <script>
 	import "../scripts/theme-optimizer.js";
+	import "../scripts/time-based-theme-color.js";
 </script>

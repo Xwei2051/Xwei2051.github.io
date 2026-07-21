@@ -4,7 +4,7 @@ import { fullscreenWallpaperConfig, sakuraConfig, siteConfig } from "@/config";
 import type { LIGHT_DARK_MODE, WALLPAPER_MODE } from "@/types/config";
 
 export function getDefaultHue(): number {
-	const fallback = "250";
+	const fallback = String(siteConfig.themeColor.hue ?? 250);
 	const configCarrier = document.getElementById("config-carrier");
 	if (!configCarrier) {
 		return Number.parseInt(fallback, 10);
@@ -13,12 +13,18 @@ export function getDefaultHue(): number {
 }
 
 export function getHue(): number {
-	if (siteConfig.themeColor.fixed) return getDefaultHue();
+	if (siteConfig.themeColor.fixed) {
+		const currentHue = getComputedStyle(document.documentElement)
+			.getPropertyValue("--hue")
+			.trim();
+		return currentHue ? Number.parseInt(currentHue, 10) : getDefaultHue();
+	}
 	const stored = localStorage.getItem("hue");
 	return stored ? Number.parseInt(stored, 10) : getDefaultHue();
 }
 
 export function setHue(hue: number): void {
+	if (siteConfig.themeColor.fixed) return;
 	localStorage.setItem("hue", String(hue));
 	const r = document.querySelector(":root") as HTMLElement;
 	if (!r) {

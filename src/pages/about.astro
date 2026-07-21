@@ -30,7 +30,7 @@ const title = i18n(I18nKey.about);
 			<PageHeader title={title} />
 
 			<!-- 从MD文件读取的内容 -->
-			<Markdown class="mt-2">
+			<Markdown class="about-page mt-2">
 				<Content />
 			</Markdown>
 		</div>
@@ -40,3 +40,258 @@ const title = i18n(I18nKey.about);
 		<Comment path="/about/" />
 	</div>
 </MainGridLayout>
+
+<style is:global>
+	.about-page {
+		--about-line: color-mix(in oklab, var(--primary) 24%, var(--line-divider));
+		--about-soft: color-mix(in oklab, var(--primary) 9%, transparent);
+	}
+
+	.about-page .about-hero {
+		position: relative;
+		margin: 0 0 2rem;
+		padding: 1.6rem 0 1.9rem;
+		border-block: 1px solid var(--about-line);
+	}
+
+	.about-page .about-hero::before {
+		content: "";
+		position: absolute;
+		inset-inline-start: 0;
+		inset-block-start: -1px;
+		width: min(42%, 18rem);
+		height: 2px;
+		background: linear-gradient(90deg, var(--primary), transparent);
+	}
+
+	.about-page .about-title-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1.4rem;
+	}
+
+	.about-page .about-title-row span {
+		color: color-mix(in oklab, var(--tw-prose-body) 70%, transparent);
+		font-size: 0.86rem;
+		font-weight: 600;
+		white-space: nowrap;
+	}
+
+	.about-page .about-title-row .about-kicker {
+		margin: 0;
+	}
+
+	.about-page .about-kicker {
+		margin: 0 0 0.75rem;
+		color: var(--primary);
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.about-page .about-hero-body {
+		display: grid;
+		grid-template-columns: minmax(18rem, 0.88fr) minmax(24rem, 1.12fr);
+		gap: clamp(2rem, 4.5vw, 4.5rem);
+		align-items: end;
+	}
+
+	.about-page .about-name-block p {
+		margin: 0.55rem 0 0;
+		color: color-mix(in oklab, var(--tw-prose-body) 66%, transparent);
+		font-size: 0.88rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.about-page .about-name-block h1 {
+		position: relative;
+		display: inline-block;
+		max-width: none;
+		margin: 0;
+		font-family:
+			"Segoe UI Variable Display",
+			"Segoe UI",
+			Inter,
+			"Microsoft YaHei",
+			sans-serif;
+		font-size: clamp(3rem, 5.5vw, 5.25rem);
+		font-style: normal;
+		font-weight: 850;
+		line-height: 1.02;
+		letter-spacing: 0;
+		background: linear-gradient(
+			100deg,
+			var(--tw-prose-headings) 0%,
+			var(--tw-prose-headings) 42%,
+			color-mix(in oklab, var(--primary) 74%, var(--tw-prose-headings)) 100%
+		);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		text-shadow: none;
+	}
+
+	.about-page .about-name-block h1::after {
+		content: "";
+		position: absolute;
+		left: 0.03em;
+		right: 0.09em;
+		bottom: -0.1em;
+		height: 0.08em;
+		border-radius: 999px;
+		background: linear-gradient(
+			90deg,
+			var(--primary),
+			color-mix(in oklab, var(--primary) 22%, transparent)
+		);
+		opacity: 0.8;
+		pointer-events: none;
+	}
+
+	.about-page .about-copy {
+		position: relative;
+		padding-left: 1.4rem;
+		border-left: 2px solid var(--about-line);
+	}
+
+	.about-page .about-copy p {
+		max-width: 48rem;
+		margin: 0;
+		color: var(--tw-prose-body);
+		font-size: 1rem;
+		line-height: 1.9;
+	}
+
+	.about-page .about-copy p + p {
+		margin-top: 0.95rem;
+	}
+
+	.about-page .about-note {
+		max-width: 48rem;
+		margin: 0.55rem 0 0;
+		color: color-mix(in oklab, var(--tw-prose-body) 78%, transparent);
+		font-size: 0.95rem;
+		line-height: 1.8;
+	}
+
+	.about-page .about-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.55rem;
+		margin: 0.95rem 0;
+	}
+
+	.about-page .about-tags span {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2rem;
+		padding: 0.15rem 0.72rem;
+		border: 1px solid color-mix(in oklab, var(--primary) 34%, transparent);
+		border-radius: 999px;
+		background: color-mix(in oklab, var(--primary) 7%, transparent);
+		color: color-mix(in oklab, var(--tw-prose-body) 86%, var(--primary));
+		font-size: 0.86rem;
+		font-weight: 700;
+	}
+
+	.about-page .about-facts {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1px;
+		margin: 0 0 2.25rem;
+		overflow: hidden;
+		border: 1px solid var(--about-line);
+		border-radius: 16px;
+		background: var(--about-line);
+	}
+
+	.about-page .about-facts div {
+		min-width: 0;
+		padding: 1rem 1.1rem;
+		background:
+			linear-gradient(135deg, var(--about-soft), transparent 55%),
+			var(--card-bg);
+	}
+
+	.about-page .about-facts span {
+		display: block;
+		margin-bottom: 0.45rem;
+		color: var(--primary);
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.about-page .about-facts strong {
+		display: block;
+		color: var(--tw-prose-headings);
+		font-size: 0.96rem;
+		line-height: 1.5;
+	}
+
+	.about-page h2 {
+		margin-top: 2.35rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--about-line);
+	}
+
+	.about-page ul {
+		padding-left: 1.15rem;
+	}
+
+	.about-page li::marker {
+		color: var(--primary);
+	}
+
+	.about-page .about-signature {
+		margin-top: 2.5rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--about-line);
+		text-align: right;
+	}
+
+	.about-page .about-signature span {
+		display: block;
+		color: var(--tw-prose-headings);
+		font-size: 1.15rem;
+		font-weight: 800;
+	}
+
+	.about-page .about-signature p {
+		margin: 0.2rem 0 0;
+		color: var(--tw-prose-body);
+		font-size: 0.92rem;
+	}
+
+	@media (max-width: 640px) {
+		.about-page .about-title-row {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.35rem;
+		}
+
+		.about-page .about-hero-body {
+			grid-template-columns: 1fr;
+			gap: 1.35rem;
+			align-items: start;
+		}
+
+		.about-page .about-name-block h1 {
+			font-size: 2.75rem;
+		}
+
+		.about-page .about-copy {
+			padding-left: 1rem;
+		}
+
+		.about-page .about-facts {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

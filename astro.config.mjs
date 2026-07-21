@@ -6,7 +6,7 @@ import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-s
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import swup from "@swup/astro";
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig } from "astro/config";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 import { oddmisc } from "oddmisc";
@@ -37,52 +37,6 @@ import { remarkMermaid } from "./src/plugins/remark-mermaid.js";
 
 // https://astro.build/config
 export default defineConfig({
-	fonts: [
-		{
-			name: "JetBrains Mono",
-			cssVariable: "--font-jetbrains-mono",
-			provider: fontProviders.fontsource(),
-			styles: ["normal", "italic"],
-		},
-		{
-			name: "ZenMaruGothic-Medium",
-			cssVariable: "--font-body",
-			provider: fontProviders.local(),
-			options: {
-				variants: [
-					{
-						src: ["./src/assets/fonts/ZenMaruGothic-Medium.ttf"],
-						weight: "500",
-						style: "normal",
-					},
-				],
-			},
-			// These variables are composed into --font-sans below. Keep their
-			// fallback lists empty; otherwise a system fallback after this Latin
-			// font prevents the following CJK font from ever being considered.
-			fallbacks: [],
-			optimizedFallbacks: false,
-		},
-		{
-			name: "Loli",
-			cssVariable: "--font-cjk",
-			provider: fontProviders.local(),
-			options: {
-				variants: [
-					{
-						src: ["./src/assets/fonts/loli.ttf"],
-						weight: "400",
-						style: "normal",
-					},
-				],
-			},
-			// The final system fallback belongs to --font-sans, not this partial
-			// CJK font stack.
-			fallbacks: [],
-			optimizedFallbacks: false,
-		},
-	],
-
 	site: siteConfig.siteURL,
 	base: "/",
 	trailingSlash: "always",
@@ -154,7 +108,7 @@ export default defineConfig({
 				borderColor: "none",
 				codeFontSize: "0.875rem",
 				codeFontFamily:
-					"var(--font-jetbrains-mono), SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+					"'Cascadia Code', 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
 				codeLineHeight: "1.5rem",
 				frames: {
 					editorBackground: "var(--codeblock-bg)",

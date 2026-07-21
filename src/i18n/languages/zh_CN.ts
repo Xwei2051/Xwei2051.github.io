@@ -3,7 +3,7 @@ import type { Translation } from "../translation";
 
 export const zh_CN: Translation = {
 	[Key.home]: "主页",
-	[Key.about]: "关于我们",
+	[Key.about]: "个人简介",
 	[Key.archive]: "归档",
 	[Key.search]: "搜索",
 	[Key.other]: "其他",
@@ -27,7 +27,7 @@ export const zh_CN: Translation = {
 
 	[Key.comments]: "评论",
 	[Key.friends]: "友链",
-	[Key.friendsSubtitle]: "发现更多优质网站",
+	[Key.friendsSubtitle]: "",
 	[Key.friendsSearchPlaceholder]: "搜索友链名称或描述...",
 	[Key.friendsFilterAll]: "全部",
 	[Key.friendsNoResults]: "未找到匹配的友链",
@@ -81,11 +81,11 @@ export const zh_CN: Translation = {
 		"请在 src/config/siteConfig.ts 文件中设置您的 Bangumi userId",
 
 	// 短文页面
-	[Key.diarySubtitle]: "随时随地，分享生活",
+	[Key.diarySubtitle]: "记录生活节奏和零散片段",
 	[Key.diaryNoResults]: "没有匹配的日记",
 	[Key.diaryCount]: "条日记",
 
-	[Key.diaryTips]: "只展示最近30条日记",
+	[Key.diaryTips]: "这里的日记独立于主页文章列表",
 	[Key.diaryMinutesAgo]: "分钟前",
 	[Key.diaryHoursAgo]: "小时前",
 	[Key.diaryDaysAgo]: "天前",
@@ -138,7 +138,7 @@ export const zh_CN: Translation = {
 
 	// 项目展示页面
 	[Key.projects]: "项目展示",
-	[Key.projectsSubtitle]: "我的开发项目作品集",
+	[Key.projectsSubtitle]: "",
 	[Key.projectsAll]: "全部",
 	[Key.projectsWeb]: "网页应用",
 	[Key.projectsMobile]: "移动应用",

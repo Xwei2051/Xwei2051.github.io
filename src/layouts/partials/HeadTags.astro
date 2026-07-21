@@ -135,8 +135,14 @@ const favicons: Favicon[] =
 		document.documentElement.setAttribute("data-theme", expressiveTheme);
 	}
 
-	// Load the hue from local storage
-	const hue = themeColorFixed ? configHue : (localStorage.getItem("hue") || configHue);
+	function getTimeHue(baseHue) {
+		const cycleMs = 60 * 1000;
+		const progress = (Date.now() % cycleMs) / cycleMs;
+		return Math.round((Number(baseHue) + progress * 360) % 360);
+	}
+
+	// Load the hue from local storage, or drive it by time when theme color is fixed
+	const hue = themeColorFixed ? getTimeHue(configHue) : (localStorage.getItem("hue") || configHue);
 	document.documentElement.style.setProperty("--hue", hue);
 
 	// calculate the --banner-height-extend, which needs to be a multiple of 4 to avoid blurry text

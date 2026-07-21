@@ -92,6 +92,9 @@ const {
 			mainContent.classList.add("no-banner-layout");
 			mainContent.style.position = "relative";
 			mainContent.style.zIndex = "30";
+			if (!isHomePage) {
+				mainContent.style.setProperty("min-height", "100vh");
+			}
 			mainContent.style.setProperty("top", "0", "important");
 			mainContent.style.setProperty("margin-top", "1rem", "important");
 			return;

@@ -1,0 +1,7 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Z-Library logo">
+	<rect width="120" height="120" rx="24" fill="#2F855A"/>
+	<path d="M35 30h39c6.6 0 12 5.4 12 12v48H47c-6.6 0-12-5.4-12-12V30Z" fill="#F7FAFC"/>
+	<path d="M42 38h36v45H48c-3.3 0-6-2.7-6-6V38Z" fill="#E6FFFA"/>
+	<path d="M48 49h28L51 75h29" fill="none" stroke="#2F855A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M34 30c-5.5 0-10 4.5-10 10v43c0 5.5 4.5 10 10 10h48" fill="none" stroke="#C6F6D5" stroke-width="6" stroke-linecap="round"/>
+</svg>

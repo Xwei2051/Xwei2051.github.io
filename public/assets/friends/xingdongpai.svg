@@ -1,0 +1,6 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Xingdongpai logo">
+	<rect width="120" height="120" rx="24" fill="#111827"/>
+	<rect x="24" y="24" width="72" height="72" rx="18" fill="#F9FAFB"/>
+	<path d="M42 40h10l8 14 8-14h10l-13 20 13 20H68l-8-14-8 14H42l13-20-13-20Z" fill="#F97316"/>
+	<path d="M60 66c-6.6 0-12 5.4-12 12v6h24v-6c0-6.6-5.4-12-12-12Z" fill="#38BDF8"/>
+</svg>
