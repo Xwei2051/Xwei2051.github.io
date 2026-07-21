@@ -4,6 +4,48 @@
 // Cards/entries should have a matching data attribute (e.g. data-category, data-type)
 
 (function () {
+	function applyFilter(tab) {
+		var container = tab.closest(".filter-tabs");
+		if (!container) return;
+
+		var tabs = container.querySelectorAll(".filter-tabs-item");
+		var filterAttr = tab.dataset.filterAttr;
+		if (!filterAttr) return;
+
+		var dataSelector = "[data-" + filterAttr + "]";
+		var parent = container.closest(".card-base") || document;
+		var items = parent.querySelectorAll(dataSelector);
+		var noResults = parent.querySelector("#no-results");
+
+		if (items.length === 0) return;
+
+		tabs.forEach(function (item) {
+			item.classList.remove("active");
+		});
+		tab.classList.add("active");
+
+		var activeValue = tab.dataset.filterValue || "all";
+		var visibleCount = 0;
+
+		items.forEach(function (item) {
+			var itemValue = item.dataset[filterAttr];
+			var match =
+				activeValue === "all" ||
+				(itemValue && itemValue.split(",").indexOf(activeValue) !== -1);
+
+			if (match) {
+				item.classList.remove("filtered-out");
+				visibleCount++;
+			} else {
+				item.classList.add("filtered-out");
+			}
+		});
+
+		if (noResults) {
+			noResults.classList.toggle("hidden", visibleCount > 0);
+		}
+	}
+
 	function initFilterTabs(reset) {
 		var containers = document.querySelectorAll(".filter-tabs");
 
@@ -23,32 +65,9 @@
 			if (items.length === 0) return;
 
 			tabs.forEach(function (tab) {
-				tab.addEventListener("click", function () {
-					tabs.forEach(function (t) {
-						t.classList.remove("active");
-					});
-					tab.classList.add("active");
-
-					var activeValue = tab.dataset.filterValue || "all";
-					var visibleCount = 0;
-
-					items.forEach(function (item) {
-						var itemValue = item.dataset[filterAttr];
-						var match =
-							activeValue === "all" || (itemValue && itemValue.split(",").indexOf(activeValue) !== -1);
-
-						if (match) {
-							item.classList.remove("filtered-out");
-							visibleCount++;
-						} else {
-							item.classList.add("filtered-out");
-						}
-					});
-
-					if (noResults) {
-						noResults.classList.toggle("hidden", visibleCount > 0);
-					}
-				});
+				tab.onclick = function () {
+					applyFilter(tab);
+				};
 			});
 		});
 	}
@@ -71,4 +90,22 @@
 	}
 
 	document.addEventListener("astro:page-load", onInit);
+	document.addEventListener("swup:contentReplaced", function () {
+		initFilterTabs(true);
+	});
+	document.addEventListener("swup:page:view", function () {
+		initFilterTabs(true);
+	});
+
+	if (!window.__filterTabsDelegated) {
+		window.__filterTabsDelegated = true;
+		document.addEventListener("click", function (event) {
+			var tab = event.target.closest
+				? event.target.closest(".filter-tabs-item")
+				: null;
+			if (!tab) return;
+
+			applyFilter(tab);
+		});
+	}
 })();
