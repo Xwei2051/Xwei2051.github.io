@@ -8,17 +8,84 @@ const {
 } = Astro.props as PageHeaderProps;
 ---
 
-<div class={`flex flex-col items-start justify-center mb-8 ${className}`}>
-	<h1
-		class="text-4xl font-bold text-black/90 dark:text-white/90 mb-2 relative
-			before:w-1 before:h-8 before:rounded-md before:bg-(--primary)
-			before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4"
-	>
+<div class={`page-header flex flex-col items-start justify-center mb-8 ${className}`}>
+	<div class="page-header-kicker">XWEI2051 / SECTION</div>
+	<h1 class="page-header-title">
 		{title}
 	</h1>
-	{
-		subtitle && (
-			<p class="text-lg text-black/60 dark:text-white/60">{subtitle}</p>
-		)
-	}
+	{subtitle && <p class="page-header-subtitle">{subtitle}</p>}
 </div>
+
+<style>
+	.page-header {
+		position: relative;
+		padding: 0.25rem 0 0.35rem 1rem;
+	}
+
+	.page-header::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 0.25rem;
+		bottom: 0.2rem;
+		width: 3px;
+		border-radius: 999px;
+		background: linear-gradient(
+			180deg,
+			oklch(0.82 0.16 var(--hue)),
+			oklch(0.72 0.14 calc(var(--hue) + 120))
+		);
+		box-shadow: 0 0 18px oklch(0.72 0.16 var(--hue) / 0.42);
+	}
+
+	.page-header-kicker {
+		margin-bottom: 0.45rem;
+		color: color-mix(in oklab, var(--primary) 76%, var(--regular-text));
+		font-size: 0.72rem;
+		font-weight: 750;
+		line-height: 1;
+		letter-spacing: 0.14em;
+	}
+
+	.page-header-title {
+		margin: 0;
+		color: transparent;
+		background: linear-gradient(
+			100deg,
+			var(--deep-text) 0%,
+			var(--deep-text) 46%,
+			color-mix(in oklab, var(--primary) 68%, var(--deep-text)) 100%
+		);
+		background-clip: text;
+		-webkit-background-clip: text;
+		font-size: clamp(2.1rem, 4vw, 3rem);
+		font-weight: 850;
+		line-height: 1.08;
+		letter-spacing: 0;
+	}
+
+	.page-header-subtitle {
+		max-width: 42rem;
+		margin: 0.55rem 0 0;
+		color: var(--regular-text);
+		font-size: 1rem;
+		line-height: 1.75;
+		opacity: 0.74;
+	}
+
+	:global(:root.dark) .page-header-title {
+		background: linear-gradient(
+			100deg,
+			rgba(255, 255, 255, 0.94) 0%,
+			rgba(255, 255, 255, 0.84) 48%,
+			oklch(0.78 0.14 var(--hue)) 100%
+		);
+		background-clip: text;
+		-webkit-background-clip: text;
+	}
+
+	:global(:root.dark) .page-header-subtitle {
+		color: rgba(255, 255, 255, 0.68);
+		opacity: 1;
+	}
+</style>

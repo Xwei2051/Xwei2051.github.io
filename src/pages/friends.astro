@@ -42,7 +42,7 @@ const allTags = Array.from(new Set(friendsList.flatMap((item) => item.tags)));
 	<div
 		class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32"
 	>
-		<div class="card-base z-10 px-9 py-6 relative w-full">
+		<div class="card-base z-10 px-6 sm:px-9 py-6 relative w-full">
 			<PageHeader
 				title={i18n(I18nKey.friends)}
 				subtitle={i18n(I18nKey.friendsSubtitle)}
@@ -57,14 +57,10 @@ const allTags = Array.from(new Set(friendsList.flatMap((item) => item.tags)));
 							type="text"
 							id="friend-search"
 							placeholder={i18n(I18nKey.friendsSearchPlaceholder)}
-							class="w-full px-4 py-2 pl-10 rounded-lg bg-(--btn-regular-bg)
-									text-black/90 dark:text-white/90
-									border border-black/10 dark:border-white/10
-									focus:outline-none focus:ring-2 focus:ring-(--primary)/50
-									transition-all duration-200"
+							class="friend-search-field w-full px-4 py-3 pl-11 text-black/90 dark:text-white/90 transition-all duration-200"
 						/>
 						<svg
-							class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-black/40 dark:text-white/40"
+							class="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-black/40 dark:text-white/40"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -145,7 +141,25 @@ const allTags = Array.from(new Set(friendsList.flatMap((item) => item.tags)));
 <style>
 	/* 搜索框焦点效果 */
 	#friend-search:focus {
-		box-shadow: 0 0 0 3px var(--primary) / 0.1;
+		outline: none;
+		box-shadow:
+			0 0 0 1px color-mix(in oklab, var(--primary) 42%, transparent),
+			0 0 22px oklch(0.72 0.16 var(--hue) / 0.16);
+	}
+
+	.friend-search-field {
+		border: 1px solid color-mix(in oklab, var(--primary) 18%, var(--line-divider));
+		border-radius: 0.9rem;
+		background:
+			linear-gradient(
+				135deg,
+				color-mix(in oklab, var(--btn-regular-bg) 92%, var(--primary) 8%),
+				color-mix(in oklab, var(--btn-regular-bg) 98%, black 2%)
+			);
+	}
+
+	.friend-search-field::placeholder {
+		color: color-mix(in oklab, var(--regular-text) 60%, transparent);
 	}
 
 	/* 标签筛选按钮样式 */
@@ -156,11 +170,11 @@ const allTags = Array.from(new Set(friendsList.flatMap((item) => item.tags)));
 	}
 
 	.filter-tag {
-		padding: 0.5rem 1rem;
-		border: 1px solid var(--line-divider);
+		padding: 0.48rem 0.95rem;
+		border: 1px solid color-mix(in oklab, var(--primary) 15%, var(--line-divider));
 		border-radius: var(--radius-large);
-		background: var(--btn-regular-bg);
-		color: var(--btn-content);
+		background: color-mix(in oklab, var(--btn-regular-bg) 88%, var(--primary) 7%);
+		color: color-mix(in oklab, var(--primary) 58%, var(--btn-content));
 		font-size: 0.875rem;
 		font-weight: 500;
 		cursor: pointer;
@@ -169,21 +183,34 @@ const allTags = Array.from(new Set(friendsList.flatMap((item) => item.tags)));
 	}
 
 	.filter-tag:hover:not(.active) {
-		background: var(--btn-hover-bg);
-		border-color: var(--primary);
+		background: color-mix(in oklab, var(--primary) 12%, var(--btn-regular-bg));
+		border-color: color-mix(in oklab, var(--primary) 38%, transparent);
 		transform: translateY(-1px);
 	}
 
 	.filter-tag.active {
-		background: var(--primary);
+		background:
+			linear-gradient(
+				135deg,
+				oklch(0.72 0.15 var(--hue)),
+				oklch(0.68 0.14 calc(var(--hue) + 70))
+			);
 		color: white;
-		border-color: var(--primary);
+		border-color: transparent;
+		box-shadow: 0 8px 18px oklch(0.66 0.15 var(--hue) / 0.18);
 	}
 
 	.filter-tag.active:hover {
-		background: var(--primary) !important;
 		color: white !important;
-		border-color: var(--primary) !important;
 		transform: translateY(-1px);
+	}
+
+	:global(:root.dark) .friend-search-field {
+		background:
+			linear-gradient(
+				135deg,
+				color-mix(in oklab, var(--btn-regular-bg) 90%, white 4%),
+				color-mix(in oklab, var(--btn-regular-bg) 98%, black 2%)
+			);
 	}
 </style>
