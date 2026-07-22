@@ -1,0 +1,5 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Codeberg">
+	<rect width="120" height="120" rx="24" fill="#2185D0"/>
+	<path d="M60 20c-21.5 0-39 17.5-39 39 0 14.1 7.5 26.5 18.8 33.3l5.7-11.4L35 61.5l13.8 9.4L60 45l11.2 25.9L85 61.5 74.5 80.9l5.7 11.4C91.5 85.5 99 73.1 99 59c0-21.5-17.5-39-39-39Z" fill="#FFFFFF"/>
+	<path d="M45.5 80.9 60 52.6l14.5 28.3L60 74.2 45.5 80.9Z" fill="#0B304D" opacity=".9"/>
+</svg>

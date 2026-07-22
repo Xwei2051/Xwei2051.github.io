@@ -76,6 +76,14 @@ export const friendsData: FriendItem[] = [
 		siteurl: "https://ps.252035.xyz/",
 		tags: ["网盘", "搜索"],
 	},
+	{
+		id: 9,
+		title: "Codeberg",
+		imgurl: "/assets/friends/codeberg.svg",
+		desc: "以自由软件为核心的代码托管与开源协作平台。",
+		siteurl: "https://codeberg.org/",
+		tags: ["代码", "开源"],
+	},
 ];
 
 // 获取所有友情链接数据
