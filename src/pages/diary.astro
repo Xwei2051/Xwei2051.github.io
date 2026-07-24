@@ -50,6 +50,57 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 	</script>
 
 	<script is:inline src="/js/filter-tabs-handler.js"></script>
+	<script is:inline define:vars={{ minutesAgo, hoursAgo, daysAgo }}>
+		(function () {
+			function formatDiaryRelativeTime(dateString) {
+				const date = new Date(dateString);
+				const diffInMinutes = Math.max(
+					0,
+					Math.floor((Date.now() - date.getTime()) / (1000 * 60)),
+				);
+				if (diffInMinutes < 60) {
+					return diffInMinutes + minutesAgo;
+				}
+				if (diffInMinutes < 1440) {
+					return Math.floor(diffInMinutes / 60) + hoursAgo;
+				}
+				return Math.floor(diffInMinutes / 1440) + daysAgo;
+			}
+
+			function updateDiaryRelativeTimes() {
+				document
+					.querySelectorAll("time[data-diary-relative-time]")
+					.forEach(function (time) {
+						const date = time.getAttribute("datetime");
+						if (!date) {
+							return;
+						}
+						time.textContent = formatDiaryRelativeTime(date);
+					});
+			}
+
+			function startDiaryRelativeTimeUpdater() {
+				updateDiaryRelativeTimes();
+				if (window.__diaryRelativeTimeTimer) {
+					clearInterval(window.__diaryRelativeTimeTimer);
+				}
+				window.__diaryRelativeTimeTimer = setInterval(
+					updateDiaryRelativeTimes,
+					60 * 1000,
+				);
+			}
+
+			startDiaryRelativeTimeUpdater();
+			document.addEventListener(
+				"swup:contentReplaced",
+				startDiaryRelativeTimeUpdater,
+			);
+			document.addEventListener(
+				"swup:page:view",
+				startDiaryRelativeTimeUpdater,
+			);
+		})();
+	</script>
 
 	<div
 		class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32"
@@ -282,7 +333,7 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 									'<iconify-icon icon="material-symbols:schedule" class="text-xs w-3.5 h-3.5"></iconify-icon>' +
 									'<time datetime="' +
 									escapeHtml(moment.date) +
-									'">' +
+									'" data-diary-relative-time>' +
 									relativeTime +
 									"</time>" +
 									"</div>" +

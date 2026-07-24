@@ -86,7 +86,9 @@ const relativeTime = formatRelativeTime(
 					name="material-symbols:schedule"
 					class="text-xs w-3.5 h-3.5"
 				/>
-				<time datetime={moment.date}>{relativeTime}</time>
+				<time datetime={moment.date} data-diary-relative-time>
+					{relativeTime}
+				</time>
 			</div>
 
 			<div class="flex items-center gap-3">
