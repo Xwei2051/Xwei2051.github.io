@@ -27,6 +27,19 @@ const relativeTime = formatRelativeTime(
 			{moment.content}
 		</p>
 
+		{
+			(moment.author || moment.source) && (
+				<p class="diary-quote-source">
+					<span class="diary-quote-dash">—</span>
+					{moment.author}
+					{moment.author && moment.source && (
+						<span class="diary-quote-separator"> · </span>
+					)}
+					{moment.source}
+				</p>
+			)
+		}
+
 		<!-- Images -->
 		{
 			moment.images && moment.images.length > 0 && (
@@ -129,6 +142,24 @@ const relativeTime = formatRelativeTime(
 
 	.moment-card.filtered-out {
 		display: none;
+	}
+
+	.diary-quote-source {
+		margin: -0.25rem 0 0.9rem;
+		color: color-mix(in oklab, var(--regular-text) 62%, var(--primary));
+		font-size: 0.86rem;
+		font-weight: 650;
+		line-height: 1.7;
+		text-align: right;
+	}
+
+	.diary-quote-dash,
+	.diary-quote-separator {
+		color: color-mix(in oklab, var(--primary) 72%, var(--regular-text));
+	}
+
+	:root.dark .diary-quote-source {
+		color: rgba(255, 255, 255, 0.62);
 	}
 
 	@keyframes fadeInUp {

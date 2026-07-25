@@ -311,6 +311,18 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 										"</div>";
 								}
 
+								let quoteSourceHtml = "";
+								if (moment.author || moment.source) {
+									quoteSourceHtml =
+										'<p class="diary-quote-source"><span class="diary-quote-dash">—</span>' +
+										(moment.author ? escapeHtml(moment.author) : "") +
+										(moment.author && moment.source
+											? '<span class="diary-quote-separator"> · </span>'
+											: "") +
+										(moment.source ? escapeHtml(moment.source) : "") +
+										"</p>";
+								}
+
 								const locationHtml = moment.location
 					? '<span class="flex items-center gap-1"><iconify-icon icon="material-symbols:location-on" class="text-xs w-3.5 h-3.5"></iconify-icon>' +
 						escapeHtml(moment.location) +
@@ -325,6 +337,7 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 									'<p class="text-sm md:text-base text-black/90 dark:text-white/90 leading-relaxed mb-3">' +
 									escapeHtml(moment.content) +
 									"</p>" +
+									quoteSourceHtml +
 									imagesHtml +
 									tagsHtml +
 									'<hr class="border-t border-black/5 dark:border-white/5 my-3" />' +
