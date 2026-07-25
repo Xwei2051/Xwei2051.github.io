@@ -29,7 +29,7 @@ export const projectsData: Project[] = [
 		category: "web",
 		techStack: ["Astro", "TypeScript", "Tailwind CSS", "Svelte"],
 		status: "in-progress",
-		sourceCode: "https://github.com/Xwei2051",
+		sourceCode: "https://github.com/Xwei2051/Xwei2051.github.io",
 		startDate: "2026-07-20",
 		featured: true,
 		tags: ["Blog", "Archive", "Personal Site"],
