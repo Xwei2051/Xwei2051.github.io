@@ -1,0 +1,447 @@
+---
+import { FilterTabs } from "@components/atoms/filter-tabs";
+import { PageHeader } from "@components/features/page-header";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { Icon } from "astro-icon/components";
+
+import {
+	getExcerptStats,
+	getExcerptsList,
+	getExcerptTags,
+} from "../data/excerpts";
+
+const title = "摘录";
+const excerpts = getExcerptsList();
+const tags = getExcerptTags();
+const stats = getExcerptStats();
+
+const filterTabs = [
+	{
+		value: "all",
+		label: "全部",
+		icon: "material-symbols:apps",
+	},
+	...tags.map((tag) => ({
+		value: tag,
+		label: tag,
+	})),
+];
+
+const formatDate = (date: string) =>
+	new Date(date).toLocaleDateString("zh-CN", {
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+	});
+---
+
+<MainGridLayout title={title} description="金句、书摘、英语句子和阶段性提醒">
+	<script>
+		import("../scripts/right-sidebar-layout.js");
+		import { loadIconify } from "../utils/icon-loader";
+
+		loadIconify().catch((error) => {
+			console.error("Failed to load Iconify:", error);
+		});
+	</script>
+
+	<script is:inline src="/js/filter-tabs-handler.js"></script>
+
+	<div
+		class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32"
+	>
+		<div class="card-base z-10 px-6 sm:px-9 py-6 relative w-full overflow-hidden">
+			<PageHeader title={title} />
+
+			<div class="excerpts-meta mb-8">
+				<span>
+					<Icon name="material-symbols:format-quote-rounded" />
+					<strong>{stats.total}</strong> 条摘录
+				</span>
+				<span>
+					<Icon name="material-symbols:label-rounded" />
+					<strong>{stats.tags}</strong> 个标签
+				</span>
+				<span>
+					<Icon name="material-symbols:person-rounded" />
+					<strong>{stats.authors}</strong> 位作者
+				</span>
+			</div>
+
+			{
+				tags.length > 0 && (
+					<div class="mb-8">
+						<FilterTabs
+							tabs={filterTabs}
+							dataAttr="tags"
+							class="excerpts-filter"
+						/>
+					</div>
+				)
+			}
+
+			<div id="excerpts-list" class="excerpts-list">
+				{
+					excerpts.map((item) => (
+						<article
+							class="excerpt-card"
+							data-tags={item.tags?.join(",") || ""}
+						>
+							<div class="excerpt-mark" aria-hidden="true"></div>
+							<p class="excerpt-content">{item.content}</p>
+
+							{
+								(item.author || item.source) && (
+									<p class="excerpt-source">
+										<span>—</span>
+										{item.author}
+										{item.author && item.source && <span> · </span>}
+										{item.source}
+									</p>
+								)
+							}
+
+							{
+								item.note && (
+									<p class="excerpt-note">
+										<Icon name="material-symbols:stylus-note-rounded" />
+										{item.note}
+									</p>
+								)
+							}
+
+							<div class="excerpt-footer">
+								<time datetime={item.date}>{formatDate(item.date)}</time>
+								{
+									item.tags && item.tags.length > 0 && (
+										<div class="excerpt-tags">
+											{item.tags.map((tag) => (
+												<span>{tag}</span>
+											))}
+										</div>
+									)
+								}
+							</div>
+						</article>
+					))
+				}
+			</div>
+
+			<div id="no-results" class="hidden text-center py-16">
+				<Icon
+					name="material-symbols:search-off-rounded"
+					class="text-6xl text-black/15 dark:text-white/15 mb-4"
+				/>
+				<p class="text-black/40 dark:text-white/40 text-lg">
+					没有匹配的摘录
+				</p>
+			</div>
+		</div>
+	</div>
+</MainGridLayout>
+
+<style>
+	.excerpts-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.55rem;
+		margin-top: -0.75rem;
+	}
+
+	.excerpts-meta span {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		min-height: 2rem;
+		padding: 0.35rem 0.72rem;
+		border: 1px solid color-mix(in oklab, var(--primary) 16%, var(--line-divider));
+		border-radius: 999px;
+		background: color-mix(in oklab, var(--btn-regular-bg) 90%, var(--primary) 6%);
+		color: color-mix(in oklab, var(--regular-text) 82%, var(--primary));
+		font-size: 0.84rem;
+		font-weight: 560;
+		line-height: 1;
+	}
+
+	.excerpts-meta :global(svg) {
+		width: 1rem;
+		height: 1rem;
+		color: oklch(0.74 0.15 var(--hue));
+	}
+
+	.excerpts-meta strong {
+		color: var(--deep-text);
+		font-weight: 800;
+	}
+
+	.excerpts-list {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
+
+	.excerpt-card {
+		position: relative;
+		overflow: hidden;
+		padding: 1.2rem 1.25rem 1rem;
+		border: 1px solid color-mix(in oklab, var(--primary) 13%, var(--line-divider));
+		border-radius: var(--radius-large);
+		background:
+			linear-gradient(
+				135deg,
+				color-mix(in oklab, var(--card-bg) 95%, var(--primary) 5%),
+				color-mix(in oklab, var(--card-bg) 98%, black 2%)
+			);
+		transition:
+			transform 0.22s ease,
+			border-color 0.22s ease,
+			box-shadow 0.22s ease;
+	}
+
+	.excerpt-card::before {
+		content: "";
+		position: absolute;
+		inset: 0 auto 0 0;
+		width: 3px;
+		background: linear-gradient(
+			180deg,
+			oklch(0.72 0.15 var(--hue)),
+			oklch(0.68 0.14 calc(var(--hue) + 80))
+		);
+		opacity: 0.9;
+	}
+
+	.excerpt-card:hover {
+		transform: translateY(-2px);
+		border-color: color-mix(in oklab, var(--primary) 34%, transparent);
+		box-shadow: 0 12px 28px oklch(0.62 0.12 var(--hue) / 0.13);
+	}
+
+	.excerpt-card.filtered-out {
+		display: none;
+	}
+
+	.excerpt-mark {
+		position: absolute;
+		top: 1.05rem;
+		right: 1.05rem;
+		width: 2.4rem;
+		height: 0.6rem;
+		pointer-events: none;
+	}
+
+	.excerpt-mark::before,
+	.excerpt-mark::after {
+		content: "";
+		position: absolute;
+		right: 0;
+		height: 2px;
+		border-radius: 999px;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			oklch(0.74 0.15 var(--hue) / 0.62)
+		);
+	}
+
+	.excerpt-mark::before {
+		top: 0;
+		width: 2.4rem;
+	}
+
+	.excerpt-mark::after {
+		bottom: 0;
+		width: 1.35rem;
+		opacity: 0.72;
+	}
+
+	.excerpt-content {
+		position: relative;
+		margin: 0;
+		max-width: 58rem;
+		color: var(--deep-text);
+		font-size: 1.02rem;
+		font-weight: 520;
+		line-height: 1.9;
+	}
+
+	.excerpt-source {
+		margin: 0.55rem 0 0;
+		color: color-mix(in oklab, var(--regular-text) 62%, var(--primary));
+		font-size: 0.88rem;
+		font-weight: 650;
+		line-height: 1.7;
+		text-align: right;
+	}
+
+	.excerpt-source span {
+		color: color-mix(in oklab, var(--primary) 72%, var(--regular-text));
+	}
+
+	.excerpt-note {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.45rem;
+		margin: 0.85rem 0 0;
+		padding: 0.75rem 0.85rem;
+		border-radius: calc(var(--radius-large) - 0.25rem);
+		background: color-mix(in oklab, var(--btn-regular-bg) 90%, var(--primary) 6%);
+		color: color-mix(in oklab, var(--regular-text) 82%, var(--primary));
+		font-size: 0.9rem;
+		line-height: 1.65;
+	}
+
+	.excerpt-note :global(svg) {
+		flex: 0 0 auto;
+		width: 1rem;
+		height: 1rem;
+		margin-top: 0.25rem;
+		color: oklch(0.74 0.15 var(--hue));
+	}
+
+	.excerpt-footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		margin-top: 1rem;
+		color: color-mix(in oklab, var(--regular-text) 68%, var(--primary));
+		font-size: 0.8rem;
+	}
+
+	.excerpt-tags {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: 0.4rem;
+	}
+
+	.excerpt-tags span {
+		padding: 0.22rem 0.55rem;
+		border-radius: 999px;
+		background: oklch(0.68 0.13 var(--hue) / 0.11);
+		color: color-mix(in oklab, var(--primary) 64%, var(--regular-text));
+		font-size: 0.76rem;
+		font-weight: 650;
+	}
+
+	:global(.excerpts-filter) {
+		gap: 0.65rem;
+	}
+
+	:global(.excerpts-filter .filter-tabs-item) {
+		border: 1px solid color-mix(in oklab, var(--primary) 15%, var(--line-divider)) !important;
+		border-radius: var(--radius-large) !important;
+		background: color-mix(in oklab, var(--btn-regular-bg) 88%, var(--primary) 7%) !important;
+		color: color-mix(in oklab, var(--primary) 58%, var(--btn-content)) !important;
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+	}
+
+	:global(.excerpts-filter .filter-tabs-item:hover:not(.active)) {
+		border-color: color-mix(in oklab, var(--primary) 38%, transparent) !important;
+		background: color-mix(in oklab, var(--primary) 12%, var(--btn-regular-bg)) !important;
+		transform: translateY(-1px);
+	}
+
+	:global(.excerpts-filter .filter-tabs-item.active) {
+		border-color: transparent !important;
+		background:
+			linear-gradient(
+				135deg,
+				oklch(0.72 0.15 var(--hue)),
+				oklch(0.68 0.14 calc(var(--hue) + 70))
+			) !important;
+		color: white !important;
+		box-shadow: 0 8px 18px oklch(0.66 0.15 var(--hue) / 0.18) !important;
+		transform: translateY(-1px);
+	}
+
+	:global(:root.dark) .excerpts-meta span {
+		border-color: oklch(0.72 0.13 var(--hue) / 0.2);
+		background: oklch(0.62 0.12 var(--hue) / 0.1);
+		color: rgba(255, 255, 255, 0.68);
+	}
+
+	:global(:root.dark) .excerpts-meta strong {
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+	:global(:root.dark) .excerpt-card {
+		border-color: oklch(0.72 0.13 var(--hue) / 0.2);
+		background:
+			linear-gradient(
+				135deg,
+				rgba(255, 255, 255, 0.055),
+				rgba(255, 255, 255, 0.025)
+			);
+	}
+
+	:global(:root.dark) .excerpt-content {
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+	:global(:root.dark) .excerpt-source {
+		color: rgba(255, 255, 255, 0.62);
+	}
+
+	:global(:root.dark) .excerpt-note {
+		background: oklch(0.62 0.12 var(--hue) / 0.12);
+		color: rgba(255, 255, 255, 0.7);
+	}
+
+	:global(:root.dark) .excerpt-footer {
+		color: rgba(255, 255, 255, 0.58);
+	}
+
+	:global(:root.dark) .excerpt-tags span {
+		background: oklch(0.68 0.13 var(--hue) / 0.16);
+		color: rgba(255, 255, 255, 0.72);
+	}
+
+	:global(:root.dark .excerpts-filter .filter-tabs-item) {
+		border-color: oklch(0.72 0.13 var(--hue) / 0.24) !important;
+		background: oklch(0.62 0.12 var(--hue) / 0.12) !important;
+		color: rgba(255, 255, 255, 0.74) !important;
+	}
+
+	:global(:root.dark .excerpts-filter .filter-tabs-item:hover:not(.active)) {
+		border-color: oklch(0.74 0.13 var(--hue) / 0.42) !important;
+		background: oklch(0.62 0.12 var(--hue) / 0.18) !important;
+	}
+
+	:global(:root.dark .excerpts-filter .filter-tabs-item.active) {
+		border-color: transparent !important;
+		background:
+			linear-gradient(
+				135deg,
+				oklch(0.72 0.15 var(--hue)),
+				oklch(0.68 0.14 calc(var(--hue) + 70))
+			) !important;
+		color: white !important;
+	}
+
+	@media (width < 640px) {
+		.excerpts-meta {
+			margin-top: -0.5rem;
+		}
+
+		.excerpt-card {
+			padding: 1.05rem 1rem 0.9rem;
+		}
+
+		.excerpt-content {
+			font-size: 0.96rem;
+			line-height: 1.8;
+		}
+
+		.excerpt-footer {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		.excerpt-tags {
+			justify-content: flex-start;
+		}
+	}
+</style>

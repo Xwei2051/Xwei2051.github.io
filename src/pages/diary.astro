@@ -239,6 +239,14 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 						return Math.floor(diffInMinutes / 1440) + daysAgo;
 					}
 
+					function formatAbsoluteDate(dateString) {
+						return new Date(dateString).toLocaleDateString("zh-CN", {
+							year: "numeric",
+							month: "2-digit",
+							day: "2-digit",
+						});
+					}
+
 					function escapeHtml(text) {
 						const map = {
 			"&": "&amp;",
@@ -263,6 +271,7 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 						return moments
 							.map(function (moment, index) {
 								const relativeTime = formatRelativeTime(moment.date);
+								const absoluteDate = formatAbsoluteDate(moment.date);
 								const tagsAttr = (moment.tags || []).join(",");
 
 								let imagesHtml = "";
@@ -349,6 +358,10 @@ const subtitle = i18n(I18nKey.diarySubtitle);
 									'" data-diary-relative-time>' +
 									relativeTime +
 									"</time>" +
+									'<span class="diary-time-separator">·</span>' +
+									'<span class="diary-absolute-date">' +
+									absoluteDate +
+									"</span>" +
 									"</div>" +
 									'<div class="flex items-center gap-3">' +
 									locationHtml +

@@ -132,6 +132,11 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Archive,
 		LinkPreset.Diary,
 		{
+			name: "摘录",
+			url: "/excerpts/",
+			icon: "material-symbols:sticky-note-2-rounded",
+		},
+		{
 			name: "项目",
 			url: "/projects/",
 			icon: "material-symbols:work",

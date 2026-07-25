@@ -13,6 +13,12 @@ const relativeTime = formatRelativeTime(
 	hoursAgo,
 	daysAgo,
 );
+
+const absoluteDate = new Date(moment.date).toLocaleDateString("zh-CN", {
+	year: "numeric",
+	month: "2-digit",
+	day: "2-digit",
+});
 ---
 
 <div
@@ -102,6 +108,8 @@ const relativeTime = formatRelativeTime(
 				<time datetime={moment.date} data-diary-relative-time>
 					{relativeTime}
 				</time>
+				<span class="diary-time-separator">·</span>
+				<span class="diary-absolute-date">{absoluteDate}</span>
 			</div>
 
 			<div class="flex items-center gap-3">
@@ -160,6 +168,19 @@ const relativeTime = formatRelativeTime(
 
 	:root.dark .diary-quote-source {
 		color: rgba(255, 255, 255, 0.62);
+	}
+
+	.diary-time-separator {
+		color: color-mix(in oklab, var(--regular-text) 42%, transparent);
+	}
+
+	.diary-absolute-date {
+		color: color-mix(in oklab, var(--regular-text) 68%, var(--primary));
+		font-weight: 560;
+	}
+
+	:root.dark .diary-absolute-date {
+		color: rgba(255, 255, 255, 0.58);
 	}
 
 	@keyframes fadeInUp {

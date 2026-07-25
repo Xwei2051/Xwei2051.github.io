@@ -202,11 +202,17 @@ export function initLinkPreloading(): void {
 	};
 
 	const preloadPrimaryRoutes = () => {
-		["/", "/archive/", "/diary/", "/projects/", "/friends/", "/about/"].forEach(
-			(path) => {
-				schedulePreload(new URL(path, window.location.origin).href);
-			},
-		);
+		[
+			"/",
+			"/archive/",
+			"/diary/",
+			"/excerpts/",
+			"/projects/",
+			"/friends/",
+			"/about/",
+		].forEach((path) => {
+			schedulePreload(new URL(path, window.location.origin).href);
+		});
 	};
 
 	const observer = new IntersectionObserver(
